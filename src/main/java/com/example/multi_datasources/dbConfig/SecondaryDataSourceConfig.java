@@ -11,13 +11,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Objects;
 
 @Configuration
-@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.example.multi_datasources.repo.secondaryUser",
         entityManagerFactoryRef = "secondaryUserEntityManagerFactory",
         transactionManagerRef= "secondaryUserTransactionManager"
@@ -29,7 +27,7 @@ public class SecondaryDataSourceConfig {
         return new DataSourceProperties();
     }
 
-    @Bean
+    @Bean(name = "secondaryUserDataSource")
     public DataSource secondaryUserDataSource() {
         return secondaryUserDataSourceProperties()
                 .initializeDataSourceBuilder()
@@ -44,7 +42,7 @@ public class SecondaryDataSourceConfig {
                 .build();
     }
 
-    @Bean
+    @Bean(name = "secondaryUserTransactionManager")
     public PlatformTransactionManager secondaryUserTransactionManager(
             final @Qualifier("secondaryUserEntityManagerFactory") LocalContainerEntityManagerFactoryBean secondaryUserEntityManagerFactory) {
         return new JpaTransactionManager(Objects.requireNonNull(secondaryUserEntityManagerFactory.getObject()));

@@ -8,9 +8,14 @@ import com.example.multi_datasources.repo.secondaryUser.SecondaryUserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+@Component
+@EnableTransactionManagement
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +24,11 @@ public class InsertUserServiceImpl implements InsertUserService {
     private final SecondaryUserRepository secondaryUserRepo;
 
     @Override
-    @Transactional
+    @Transactional(
+            value = "chainedTransactionManager",
+            rollbackFor = {Exception.class},
+            isolation = Isolation.READ_UNCOMMITTED
+    )
     public UsersDto insertValidUsers(UsersDto dto) {
         PublicUser pUser = publicUserRepo.save(dto.getPublicUser());
         SecondaryUser sUser = secondaryUserRepo.save(dto.getSecondaryUser());
@@ -27,7 +36,11 @@ public class InsertUserServiceImpl implements InsertUserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(
+            value = "chainedTransactionManager",
+            rollbackFor = {Exception.class},
+            isolation = Isolation.READ_UNCOMMITTED
+    )
     public UsersDto insertInvalidUsers(UsersDto dto) throws Exception {
         PublicUser pUser = publicUserRepo.save(dto.getPublicUser());
         SecondaryUser sUSer;

@@ -12,13 +12,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Objects;
 
 @Configuration
-@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.example.multi_datasources.repo.publicUser",
         entityManagerFactoryRef = "publicUserEntityManagerFactory",
         transactionManagerRef= "publicUserTransactionManager"
@@ -31,7 +29,7 @@ public class PublicDataSourceConfig {
         return new DataSourceProperties();
     }
 
-    @Bean
+    @Bean(name = "publicUserDataSource")
     @Primary
     public DataSource publicUserDataSource() {
         return publicUserDataSourceProperties()
@@ -49,7 +47,7 @@ public class PublicDataSourceConfig {
     }
 
     @Primary
-    @Bean
+    @Bean(name = "publicUserTransactionManager")
     public PlatformTransactionManager publicUserTransactionManager(
             final @Qualifier("publicUserEntityManagerFactory") LocalContainerEntityManagerFactoryBean publicUserEntityManagerFactory) {
         return new JpaTransactionManager(Objects.requireNonNull(publicUserEntityManagerFactory.getObject()));
