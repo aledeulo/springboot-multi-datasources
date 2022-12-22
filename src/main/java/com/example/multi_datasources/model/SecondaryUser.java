@@ -15,7 +15,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class SecondaryUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
 }
