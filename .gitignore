@@ -36,3 +36,5 @@ target
 HELP.md
 mvnw*
 .mvn
+
+postgres/data/

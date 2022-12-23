@@ -4,4 +4,5 @@ import com.example.multi_datasources.model.PublicUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PublicUserRepository extends JpaRepository<PublicUser, Long> {
+    int countByName(String name);
 }
