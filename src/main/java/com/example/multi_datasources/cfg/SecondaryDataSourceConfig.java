@@ -6,15 +6,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
-import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
@@ -46,18 +45,17 @@ public class SecondaryDataSourceConfig {
     @Bean(name = "secondaryUserEntityManager")
     @DependsOn("transactionManager")
     public LocalContainerEntityManagerFactoryBean accountEntityManager(
-            EntityManagerFactoryBuilder builder,
+            JpaVendorAdapter jpaVendorAdapter,
             @Qualifier("secondaryUserDataSource") DataSource dataSource) {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
-        properties.put("javax.persistence.transactionType", "JTA");
-
-        return builder
-                .dataSource(dataSource)
-                .packages("com.example.multi_datasources.model.secondary")
-                .persistenceUnit("secondaryUserPU")
-                .jta(true)
-                .properties(properties)
-                .build();
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setJtaDataSource(dataSource);
+        em.setJpaVendorAdapter(jpaVendorAdapter);
+        em.setPackagesToScan("com.example.multi_datasources.model.secondary");
+        em.setPersistenceUnitName("secondaryUserPU");
+        em.setJpaPropertyMap(Map.of(
+                "hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName(),
+                "javax.persistence.transactionType", "JTA"
+        ));
+        return em;
     }
 }
