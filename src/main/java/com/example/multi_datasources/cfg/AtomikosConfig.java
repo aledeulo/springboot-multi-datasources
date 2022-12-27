@@ -21,6 +21,7 @@ import javax.transaction.UserTransaction;
 @Configuration
 @EnableTransactionManagement
 public class AtomikosConfig {
+
     @Bean
     public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
@@ -39,7 +40,6 @@ public class AtomikosConfig {
     @Bean(name = "userTransaction")
     public UserTransaction userTransaction() throws SystemException {
         UserTransaction userTransaction = new UserTransactionImp();
-        userTransaction.setTransactionTimeout(10000);
         AtomikosJtaPlatform.transaction = userTransaction;
         return userTransaction;
     }
@@ -47,7 +47,6 @@ public class AtomikosConfig {
     @Bean(name = "atomikosTransactionManager")
     public TransactionManager atomikosTransactionManager() {
         UserTransactionManager userTransactionManager = new UserTransactionManager();
-        userTransactionManager.setForceShutdown(false);
         AtomikosJtaPlatform.transactionManager = userTransactionManager;
         return userTransactionManager;
     }
