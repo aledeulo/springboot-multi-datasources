@@ -47,7 +47,6 @@ public class AtomikosConfig {
     @Bean(name = "atomikosTransactionManager")
     public TransactionManager atomikosTransactionManager() {
         UserTransactionManager userTransactionManager = new UserTransactionManager();
-        userTransactionManager.setForceShutdown(false);
         AtomikosJtaPlatform.transactionManager = userTransactionManager;
         return userTransactionManager;
     }
