@@ -1,6 +1,5 @@
 package com.example.multi_datasources.cfg;
 
-import org.hibernate.engine.transaction.jta.platform.internal.AtomikosJtaPlatform;
 import org.postgresql.xa.PGXADataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
