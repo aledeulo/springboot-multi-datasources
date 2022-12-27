@@ -20,7 +20,7 @@ import java.util.Map;
 @DependsOn("transactionManager")
 @EnableJpaRepositories(
         basePackages = "com.example.multi_datasources.repo.publicUser",
-        entityManagerFactoryRef = "publicUserEntityManagerFactory"
+        entityManagerFactoryRef = "publicUserEntityManager"
 )
 public class PublicDataSourceConfig {
     @Bean(name = "publicUserDSProps")
