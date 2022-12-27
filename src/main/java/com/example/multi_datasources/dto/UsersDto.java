@@ -1,7 +1,7 @@
 package com.example.multi_datasources.dto;
 
 import com.example.multi_datasources.model.PublicUser;
-import com.example.multi_datasources.model.SecondaryUser;
+import com.example.multi_datasources.model.secondary.SecondaryUser;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

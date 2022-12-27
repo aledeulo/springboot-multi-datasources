@@ -2,7 +2,7 @@ package com.example.multi_datasources.services;
 
 import com.example.multi_datasources.dto.UsersDto;
 import com.example.multi_datasources.model.PublicUser;
-import com.example.multi_datasources.model.SecondaryUser;
+import com.example.multi_datasources.model.secondary.SecondaryUser;
 import com.example.multi_datasources.repo.publicUser.PublicUserRepository;
 import com.example.multi_datasources.repo.secondaryUser.SecondaryUserRepository;
 import lombok.RequiredArgsConstructor;
