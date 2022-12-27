@@ -1,5 +1,6 @@
 package com.example.multi_datasources.controllers;
 
+import com.example.multi_datasources.dto.UserCountDto;
 import com.example.multi_datasources.dto.UsersDto;
 import com.example.multi_datasources.services.InsertUserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,9 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,5 +35,17 @@ public class AppController {
     public ResponseEntity<UsersDto> insertInvalidUsers(@RequestBody UsersDto dto) throws Exception {
         log.info("insertValidUsers: Received request: {}", objectMapper.writeValueAsString(dto));
         return ResponseEntity.ok().body(insertUserService.insertInvalidUsers(dto));
+    }
+
+    @PostMapping("/insertUsers")
+    public UsersDto insertUsers(@RequestBody UsersDto dto) throws JsonProcessingException {
+        log.info("insertUsers: Received request: {}", objectMapper.writeValueAsString(dto));
+        return insertUserService.insertUsers(dto);
+    }
+
+    @GetMapping("countByName")
+    public UserCountDto countByName(@RequestParam String name) {
+        log.info("countByName: Received request: name={}", name);
+        return insertUserService.countByName(name);
     }
 }
